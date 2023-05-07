@@ -19,7 +19,7 @@ void Point::print() {
     cout << '(' << this->x << ", " << this->y << ')' << endl;
 }
 
-Point Point::moveTowards(Point src, Point des, double dis) {
+Point moveTowards(Point src, Point des, double dis) {
     double srcToDes = src.distance(des);
     if (dis >= srcToDes) {
         return des;
@@ -27,3 +27,32 @@ Point Point::moveTowards(Point src, Point des, double dis) {
     //not finish
     return Point(1,1);
 }
+
+ostream &operator <<(ostream &output, const Point &point) {
+    output << point.print();
+    return output;
+}
+
+//Input
+std::istream &operator>>(std::istream &input, Point &point) {
+    int x, y;
+    char delimiter;
+
+    if (!(input >> x)) {
+        throw runtime_error("Error: Invalid input for x.");
+    }
+
+    input >> ws; // Skip leading whitespace
+
+    // Check if there is a delimiter
+    if (!input.eof() && (input.peek() == ',' || input.peek() == ' '))
+        input >> delimiter;
+
+    if (!(input >> y)) {
+        throw runtime_error("Error: Invalid input for y.");
+    }
+    point = Point(x, y);
+    return input;
+}
+
+
