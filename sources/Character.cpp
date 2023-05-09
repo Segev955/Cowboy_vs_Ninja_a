@@ -5,18 +5,20 @@
 #include "Team.hpp"
 using namespace ariel;
 
+Character::Character() : pos(0,0), hitPoint(0){}
+
 //constructor
 Character::Character(const string &name, const Point &pos, const int hitPoint) : name(name), pos(pos),
                                                                                  hitPoint(hitPoint) {}
 
-bool Character::isAlive() {
+bool Character::isAlive() const{
     if (hitPoint > 0)
         return true;
     return false;
 }
 
 double Character::distance(Character *c) {
-    return this->pos.distance(c);
+    return this->pos.distance(c->pos);
 }
 
 void Character::hit(int num) {
@@ -31,15 +33,16 @@ Point Character::getLocation() {
     return this->pos;
 }
 
-void Character::print() {
+string Character::print() const{
     if (!isAlive()) {
-        cout << '(' << name << ')' << endl;
+
+        return '(' + name + ')';
     } else {
-        cout << name << endl;
-        cout << hitPoint << endl;
-        cout << pos << endl;
+        return "name: " + name ;//+ "hitPoint: " + hitPoint + "pos: " + pos;
     }
 }
+
+void Character::attack(Character *enemy) {}
 
 ostream &operator <<(ostream &output, const Character &character) {
     output << character.print();
@@ -54,6 +57,9 @@ void Cowboy::shoot(Character *enemy) {
         enemy->hit(10);
         bullets --;
     }
+    else if (!hasboolets()) {
+        reload();
+    }
 }
 
 bool Cowboy::hasboolets() {
@@ -66,6 +72,10 @@ void Cowboy::reload() {
     this->bullets = 6;
 }
 
+void Cowboy::attack(Character *enemy) {
+    shoot(enemy);
+}
+
 //Cowboy ----------------------------------------------------
 
 //Ninja -----------------------------------------------------
@@ -76,9 +86,17 @@ void Ninja::move(Character *enemy) {
 }
 
 void Ninja::slash(Character *enemy) {
-    if(isAlive() && this->getLocation().distance(enemy) < 1) {
+    if(isAlive() && this->getLocation().distance(enemy->getLocation()) < 1) {
         enemy->hit(31);
+    }
+    else if (this->getLocation().distance(enemy->getLocation()) >= 1) {
+        move(enemy);
     }
 }
 
+void Ninja::attack(Character *enemy) {
+    slash(enemy);
+}
+
 //Ninja -----------------------------------------------------
+

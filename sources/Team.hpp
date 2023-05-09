@@ -26,7 +26,7 @@ private:
 public:
     Point(double x, double y);
     double distance(Point p);
-    void print();
+    void print() const;
     friend Point moveTowards(Point src, Point des, double dis);
 
     friend ostream &operator <<(ostream &output, const Point &point);
@@ -41,13 +41,15 @@ protected:
     string name;
 
 public:
+    Character();
     Character(const string &name, const Point &pos, const int hitPoint);
-    bool isAlive();
+    bool isAlive() const;
     double distance(Character *c);
     void hit(int num);
     string getName();
     Point getLocation();
-    void print();
+    string print() const;
+    virtual void attack(Character *enemy);
 
     friend ostream &operator <<(ostream &output, const Character &character);
 
@@ -62,6 +64,7 @@ public:
     void shoot(Character *enemy);
     bool hasboolets();
     void reload();
+    void attack(Character *enemy);
 };
 //ninja:
 class Ninja: public Character {
@@ -71,6 +74,7 @@ public:
     Ninja (const string &name, const Point &pos, int hitPoint, int speed);
     void move(Character *enemy);
     void slash(Character *enemy);
+    void attack(Character *enemy);
 };
 
 class YoungNinja: public Ninja {
@@ -92,13 +96,15 @@ public:
 class Team {
 private:
     vector<Character*> teamMates;
-    Character leader;
+    Character *leader;
 public:
+    Team(Character *leader);
     void add(Character *c);
-    void attack();
-    int stillAlive();
+    void attack(Team *enemy);
+    int stillAlive() const;
     void print();
     void nextLeader();
+    Character* closest(Team *team);
 
     friend ostream &operator <<(ostream &output, const Team &team);
 
@@ -106,4 +112,5 @@ public:
 
 
 #endif //COWBOY_VS_NINJA_A_TEAM_HPP
+
 

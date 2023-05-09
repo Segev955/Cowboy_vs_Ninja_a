@@ -15,7 +15,7 @@ double Point::distance(Point p) {
     return sqrt(a + b);
 }
 
-void Point::print() {
+void Point::print() const{
     cout << '(' << this->x << ", " << this->y << ')' << endl;
 }
 
@@ -29,7 +29,7 @@ Point moveTowards(Point src, Point des, double dis) {
 }
 
 ostream &operator <<(ostream &output, const Point &point) {
-    output << point.print();
+    output << '(' << point.x << ", " << point.y << ')';
     return output;
 }
 
@@ -54,5 +54,6 @@ std::istream &operator>>(std::istream &input, Point &point) {
     point = Point(x, y);
     return input;
 }
+
 
 
