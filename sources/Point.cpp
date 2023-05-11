@@ -15,8 +15,8 @@ double Point::distance(Point p) {
     return sqrt(a + b);
 }
 
-void Point::print() const{
-    cout << '(' << this->x << ", " << this->y << ')' << endl;
+string Point::print() const{
+    return "(" + to_string(this->x) + ", " + to_string(this->y)  + ")";
 }
 
 Point moveTowards(Point src, Point des, double dis) {
@@ -28,32 +28,6 @@ Point moveTowards(Point src, Point des, double dis) {
     return Point(1,1);
 }
 
-ostream &operator <<(ostream &output, const Point &point) {
-    output << '(' << point.x << ", " << point.y << ')';
-    return output;
-}
-
-//Input
-std::istream &operator>>(std::istream &input, Point &point) {
-    int x, y;
-    char delimiter;
-
-    if (!(input >> x)) {
-        throw runtime_error("Error: Invalid input for x.");
-    }
-
-    input >> ws; // Skip leading whitespace
-
-    // Check if there is a delimiter
-    if (!input.eof() && (input.peek() == ',' || input.peek() == ' '))
-        input >> delimiter;
-
-    if (!(input >> y)) {
-        throw runtime_error("Error: Invalid input for y.");
-    }
-    point = Point(x, y);
-    return input;
-}
 
 
 

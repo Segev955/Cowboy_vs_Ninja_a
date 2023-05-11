@@ -39,7 +39,7 @@ Character* Team::closest(Team *team) {
 }
 
 void Team::attack(Team *enemy) {
-    cout << stillAlive() << endl;
+//    cout << stillAlive() << endl;
 
     if (stillAlive() == 0 || enemy->stillAlive() == 0) {
         return;
@@ -53,23 +53,22 @@ void Team::attack(Team *enemy) {
 }
 
 int Team::stillAlive() const{
-    return teamMates.size();
+    int c = 0;
+    for (std::size_t i = 0; i < teamMates.size(); ++i) {
+        if (teamMates[i]->isAlive()) {
+            c++;
+        }
+    }
+    return c;
 }
 
-void Team::print() {
-    for (std::size_t i = 0; i < teamMates.size(); ++i) {
-        cout << teamMates[i] << endl;
-    }
+void Team::print() const {
+    cout << *this << endl;
 }
 
 ostream &operator<<(ostream &output, const Team &team) {
-    if (team.stillAlive())
-        output << "Leader: " << team.leader->getName();
-    else
-        output << "All Dead";
-    output << '\n' << "Participants: ";
     for (auto item: team.teamMates) {
-        output << *item << ", ";
+        output << *item;
     }
     return output;
 }

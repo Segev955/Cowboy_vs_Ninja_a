@@ -26,11 +26,8 @@ private:
 public:
     Point(double x, double y);
     double distance(Point p);
-    void print() const;
+    string print() const;
     friend Point moveTowards(Point src, Point des, double dis);
-
-    friend ostream &operator <<(ostream &output, const Point &point);
-    friend istream &operator >>(std::istream &input, Point &point);
 
 };
 
@@ -48,7 +45,7 @@ public:
     void hit(int num);
     string getName();
     Point getLocation();
-    string print() const;
+    virtual string print() const;
     virtual void attack(Character *enemy);
 
     friend ostream &operator <<(ostream &output, const Character &character);
@@ -65,6 +62,7 @@ public:
     bool hasboolets();
     void reload();
     void attack(Character *enemy);
+    string print() const;
 };
 //ninja:
 class Ninja: public Character {
@@ -75,6 +73,7 @@ public:
     void move(Character *enemy);
     void slash(Character *enemy);
     void attack(Character *enemy);
+    string print() const;
 };
 
 class YoungNinja: public Ninja {
@@ -102,7 +101,7 @@ public:
     void add(Character *c);
     void attack(Team *enemy);
     int stillAlive() const;
-    void print();
+    void print() const;
     void nextLeader();
     Character* closest(Team *team);
 
