@@ -28,6 +28,10 @@ public:
     double distance(Point p);
     string print() const;
     friend Point moveTowards(Point src, Point des, double dis);
+    double getX();
+    double getY();
+    bool operator==(const Point& other) const;
+
 
 };
 
@@ -41,10 +45,11 @@ public:
     Character();
     Character(const string &name, const Point &pos, const int hitPoint);
     bool isAlive() const;
-    double distance(Character *c);
+    double distance(const Character *c) ;
     void hit(int num);
     string getName();
     Point getLocation();
+    int getHitPoint();
     virtual string print() const;
     virtual void attack(Character *enemy);
 
@@ -63,6 +68,7 @@ public:
     void reload();
     void attack(Character *enemy);
     string print() const;
+    int getBullets();
 };
 //ninja:
 class Ninja: public Character {
@@ -74,6 +80,7 @@ public:
     void slash(Character *enemy);
     void attack(Character *enemy);
     string print() const;
+    int getSpeed();
 };
 
 class YoungNinja: public Ninja {
@@ -107,6 +114,10 @@ public:
 
     friend ostream &operator <<(ostream &output, const Team &team);
 
+};
+
+class Team2: public Team{
+    Team2(Character *leader);
 };
 
 

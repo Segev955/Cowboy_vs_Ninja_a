@@ -16,7 +16,7 @@ double Point::distance(Point p) {
 }
 
 string Point::print() const{
-    return "(" + to_string(this->x) + ", " + to_string(this->y)  + ")";
+    return "(" + to_string(this->x) + "," + to_string(this->y)  + ")";
 }
 
 Point moveTowards(Point src, Point des, double dis) {
@@ -26,6 +26,19 @@ Point moveTowards(Point src, Point des, double dis) {
     }
     //not finish
     return Point(1,1);
+}
+
+double Point::getX() {
+    return x;
+}
+
+double Point::getY() {
+    return y;
+}
+
+//Equal
+bool Point::operator==(const Point &other) const {
+    return x == other.x && y == other.y;
 }
 
 

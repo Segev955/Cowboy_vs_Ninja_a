@@ -51,7 +51,7 @@ void Team::attack(Team *enemy) {
     leader->attack(c);
     attack(enemy);
 }
-
+;
 int Team::stillAlive() const{
     int c = 0;
     for (std::size_t i = 0; i < teamMates.size(); ++i) {

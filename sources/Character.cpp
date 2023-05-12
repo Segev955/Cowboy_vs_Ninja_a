@@ -18,7 +18,7 @@ bool Character::isAlive() const {
     return false;
 }
 
-double Character::distance(Character *c) {
+double Character::distance(const Character *c) {
     return this->pos.distance(c->pos);
 }
 
@@ -32,6 +32,10 @@ string Character::getName() {
 
 Point Character::getLocation() {
     return this->pos;
+}
+
+int Character::getHitPoint() {
+    return this->hitPoint;
 }
 
 string Character::print() const {
@@ -86,6 +90,10 @@ string Cowboy::print() const {
     }
 }
 
+int Cowboy::getBullets() {
+    return bullets;
+}
+
 //Cowboy ----------------------------------------------------
 
 //Ninja -----------------------------------------------------
@@ -116,6 +124,10 @@ string Ninja::print() const {
         return "--N--\nname: " + name + "\nhitPoint: " + to_string(hitPoint) + "\npos: " + pos.print() + "\nSpeed: " +
                to_string(speed) + "\n";
     }
+}
+
+int Ninja::getSpeed() {
+    return speed;
 }
 
 //Ninja -----------------------------------------------------
