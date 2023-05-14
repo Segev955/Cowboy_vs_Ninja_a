@@ -16,7 +16,7 @@ TEST_CASE("Point") {
     CHECK_EQ(a.getY(),2.5);
     CHECK_EQ(a.print(),"(1.1,2.5)");
     CHECK_EQ(a.distance(b), 38.422);
-//    CHECK_EQ(moveTowards(a,b,1), Point(1,1));
+    CHECK_EQ(moveTowards(a,b,1), Point(1,1));
 }
 
 TEST_CASE("Character") {
@@ -83,7 +83,7 @@ TEST_CASE("Team") {
     CHECK_NOTHROW(team.add(&y));
     CHECK_EQ(team.stillAlive(), 2);
     CHECK_NOTHROW(team.print());
-//    CHECK_NOTHROW(team.attack(&team2));
+    CHECK_NOTHROW(team.attack(&team2));
 }
 
 
