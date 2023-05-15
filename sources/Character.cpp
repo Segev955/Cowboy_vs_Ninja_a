@@ -6,11 +6,49 @@
 
 using namespace ariel;
 
-Character::Character() : pos(0, 0), hitPoint(0) {}
+Character::Character() : pos(0, 0), hitPoint(0), team(false) {}
 
 //constructor
-Character::Character(const string &name, const Point &pos, const int hitPoint) : name(name), pos(pos),
-                                                                                 hitPoint(hitPoint) {}
+Character::Character(const string &name, const Point &pos, int hitPoint) : name(name), pos(pos),
+                                                                                 hitPoint(hitPoint), team(false) {}
+//destructor
+Character::~Character() {}
+
+//Copy constructor
+Character::Character(const Character &other) : pos(other.pos) {
+    this->name = other.name;
+    this->hitPoint = other.hitPoint;
+    this->team = other.team;
+}
+
+//Copy assignment operator
+Character &Character::operator=(const Character &other) {
+    if (this != &other) {
+        this->name = other.name;
+        this->pos = other.pos;
+        this->hitPoint = other.hitPoint;
+        this->team = other.team;
+    }
+    return *this;
+}
+
+//Move constructor
+Character::Character(Character &&other) noexcept : pos(move(other.pos)) { //cant Throw
+    this->name = move(other.name);
+    this->hitPoint = other.hitPoint;
+    this->team = other.team;
+}
+
+//Move assignment operator
+Character& Character::operator=(Character&& other) noexcept {
+    if (this != &other) {
+        this->name = move(other.name);
+        this->pos = move(other.pos);
+        this->hitPoint = other.hitPoint;
+        this->team = other.team;
+    }
+    return *this;
+}
 
 bool Character::isAlive() const {
     if (hitPoint > 0)
@@ -18,11 +56,14 @@ bool Character::isAlive() const {
     return false;
 }
 
-double Character::distance(const Character *c) {
-    return this->pos.distance(c->pos);
+double Character::distance(const Character *character) {
+    return this->pos.distance(character->pos);
 }
 
 void Character::hit(int num) {
+    if (num < 0) {
+        throw invalid_argument("hit: number cant be negative");
+    }
     this->hitPoint -= num;
 }
 
@@ -48,6 +89,18 @@ string Character::print() const {
 
 void Character::attack(Character *enemy) {}
 
+bool Character::inTeam() {
+    return team;
+}
+
+void Character::setTeam(bool ist) {
+    team = ist;
+}
+
+bool operator==(const Character& ch1, const Character& ch2) {
+    return &ch1 == &ch2;
+}
+
 //Output
 ostream &operator<<(ostream &output, const Character &character) {
     output << character.print();
@@ -58,6 +111,12 @@ ostream &operator<<(ostream &output, const Character &character) {
 Cowboy::Cowboy(const string &name, const Point &pos) : Character(name, pos, 110), bullets(6) {}
 
 void Cowboy::shoot(Character *enemy) {
+    if (*this == *enemy) {
+        throw runtime_error("Can't attack yourself");
+    }
+    if (!enemy->isAlive() || !isAlive()) {
+        throw runtime_error("The Character is dead");
+    }
     if (isAlive() && hasboolets()) {
         enemy->hit(10);
         bullets--;
@@ -73,6 +132,9 @@ bool Cowboy::hasboolets() {
 }
 
 void Cowboy::reload() {
+    if (!isAlive()) {
+        throw runtime_error("The Character is dead");
+    }
     this->bullets = 6;
 }
 
@@ -105,8 +167,14 @@ void Ninja::move(Character *enemy) {
 }
 
 void Ninja::slash(Character *enemy) {
+    if (*this == *enemy) {
+        throw runtime_error("Can't attack yourself");
+    }
+    if (!enemy->isAlive() || !isAlive()) {
+        throw runtime_error("The Character is dead");
+    }
     if (isAlive() && this->getLocation().distance(enemy->getLocation()) < 1) {
-        enemy->hit(31);
+        enemy->hit(40);
     } else if (this->getLocation().distance(enemy->getLocation()) >= 1) {
         move(enemy);
     }
@@ -130,5 +198,12 @@ int Ninja::getSpeed() {
     return speed;
 }
 
+YoungNinja::YoungNinja(const string &name, const Point &pos) : Ninja(name,pos,100, 14){}
+
+TrainedNinja::TrainedNinja(const string &name, const Point &pos) : Ninja(name,pos,120, 12){}
+
+OldNinja::OldNinja(const string &name, const Point &pos) : Ninja(name,pos,150, 8){}
+
 //Ninja -----------------------------------------------------
+
 
